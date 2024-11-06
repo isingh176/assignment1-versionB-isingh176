@@ -4,16 +4,16 @@
 OPS445 Assignment 1 
 Program: assignment1.py 
 The python code in this file is original work written by
-"Student Name". No code in this file is copied from any other source 
+"Ishwinder Singh". No code in this file is copied from any other source 
 except those provided by the course instructor, including any person, 
 textbook, or on-line resource. I have not shared this python script 
 with anyone or anything except for submission for grading.  
 I understand that the Academic Honesty Policy will be enforced and 
 violators will be reported and appropriate action will be taken.
 
-Author: <Student Name>
-Semester: <Fall/Winter/Summer> <Year>
-Description: <fill this in>
+Author: Ishwinder Singh
+Semester: Fall 2024
+Description: This script calculates future or past date based on a given date(user input)
 '''
 
 import sys
@@ -66,8 +66,34 @@ def after(date: str) -> str:
     return f"{year}-{mon:02}-{day:02}"
 
 def before(date: str) -> str:
-    "Returns previous day's date as YYYY-MM-DD"
-    ...
+    """
+    before() -> date for previous day in YYYY-MM-DD string format
+
+    Return the date for the previous day of the given date in YYYY-MM-DD format.
+    """
+    year, mon, day = (int(x) for x in date.split('-'))      # Split the date into year, month, and day components
+    
+    day -= 1       # Move to the previous day
+
+    if day < 1:     # Check if day goes below 1 (start of the month)
+        mon -= 1     # Move to the previous month
+
+        if mon < 1:      # If the month goes below January, reset to December of the previous year
+            mon = 12
+            year -= 1
+
+        mon_dict = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+                    7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}   # Determine the maximum days in the previous month (account for leap years in February)
+        
+        # Check if the new month is February in a leap year
+        if mon == 2 and ((year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)):
+            day = 29
+        else:
+            day = mon_dict[mon]
+    
+    # Return the date formatted as YYYY-MM-DD
+    return f"{year}-{mon:02}-{day:02}"
+
 
 def usage():
     "Print a usage message to the user"
